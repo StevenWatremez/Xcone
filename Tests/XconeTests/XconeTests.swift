@@ -1,5 +1,11 @@
+//
+//  XconeTests.swift
+//  XconePackageDescription
+//
+//  Created by Steven_WATREMEZ on 28/10/2017.
+//
+
 import XCTest
-@testable import Xcone
 
 class XconeTests: XCTestCase {
   func testTemplate() {

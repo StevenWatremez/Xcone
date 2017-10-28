@@ -5,7 +5,6 @@
 //  Created by Steven_WATREMEZ on 28/10/2017.
 //
 
-import Foundation
 import Commander
 
 internal struct Generator {
@@ -13,7 +12,6 @@ internal struct Generator {
                        xcodeVersion: String,
                        application: String,
                        config: String) {
-    
     // TODO : check template :
     // - if it's just name, search inside resources to find this template
     // - if it's a path, use this template to render icon

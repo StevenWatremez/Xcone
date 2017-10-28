@@ -1,3 +1,10 @@
+//
+//  main.swift
+//  XconePackageDescription
+//
+//  Created by Steven_WATREMEZ on 28/10/2017.
+//
+
 import Commander
 
 private let generator = Generator()
