@@ -12,11 +12,11 @@ private let generator = Generator()
 private let main = command(
   // auto-all : is used to automate Xcode 
   // --template : is used to specified which icon template you want to create xcode icon
-  Option<String>("template", default: "banner", flag: "t", description: "template name"),
+  Option<String>("template", default: "", flag: "t", description: "template name"),
   // --xcode-version : is here to force xcode version to render icon template
   Option<String>("xcode-version", default: "", flag: "x", description: "xcode custom version number"),
   // --application : is used to specified which Xcode you want to change icon of it
-  Option<String>("application", default: "Xcode", flag: "a", description: "Xcode target application"),
+  Option<String>("application", default: "", flag: "a", description: "Xcode target application"),
   // --config or -c : is used to specified which Xcode you want to change icon of it
   Option<String>("config", default: "", flag: "c", description: "special yaml config to target specific or multiple Xcode"),
   generator.generate)
