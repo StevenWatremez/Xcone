@@ -13,13 +13,13 @@ public class CommandLine {
   let application: String?
   let config: String?
   
-  public init(template: String,
+  public init?(template: String,
        xcodeVersion: String,
        application: String,
        config: String) {
-    // guard !template.isEmpty || !xcodeVersion.isEmpty || !application.isEmpty || !config.isEmpty else {
-    //   return nil
-    // }
+    guard !template.isEmpty || !xcodeVersion.isEmpty || !application.isEmpty || !config.isEmpty else {
+      return nil
+    }
     self.template = !template.isEmpty ? template : nil
     self.xcodeVersion = !xcodeVersion.isEmpty ? xcodeVersion : nil
     self.application = !application.isEmpty ? application : nil

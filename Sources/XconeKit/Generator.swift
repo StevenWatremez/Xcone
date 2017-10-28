@@ -20,11 +20,11 @@ public struct Generator {
                           application: application,
                           config: config)
     
-    // guard let cli = commandLine else {
-    //   print("here print Xcone cli description")
-    //   exit(1)
-    // }
-    if let cliError = commandLine.error {
+    guard let cli = commandLine else {
+      print("here print Xcone cli description")
+      exit(1)
+    }
+    if let cliError = cli.error {
       cliError.printError()
       exit(1)
     } else {

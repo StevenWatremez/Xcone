@@ -18,6 +18,15 @@
           "revision": "e34d5687e1e9d865e3527dd58bc2f7464ef6d936",
           "version": "0.8.0"
         }
+      },
+      {
+        "package": "XconeKit",
+        "repositoryURL": "/Users/steven_watremez/workspace/tools/XconeKit/XconeKit",
+        "state": {
+          "branch": null,
+          "revision": "05ffef6df741bba460e1fee8ec4bff056618e967",
+          "version": "0.1.0"
+        }
       }
     ]
   },

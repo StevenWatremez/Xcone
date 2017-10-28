@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Xcone
+@testable import XconeKit
 
 class XconeCLITests: XCTestCase {
   
