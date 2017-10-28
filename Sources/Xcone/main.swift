@@ -6,8 +6,7 @@
 //
 
 import Commander
-
-private let generator = Generator()
+import XconeKit
 
 private let main = command(
   // auto-all : is used to automate Xcode 
@@ -19,7 +18,7 @@ private let main = command(
   Option<String>("application", default: "", flag: "a", description: "Xcode target application"),
   // --config or -c : is used to specified which Xcode you want to change icon of it
   Option<String>("config", default: "", flag: "c", description: "special yaml config to target specific or multiple Xcode"),
-  generator.generate)
+  Generator.generate)
 
 main.run() // your application start from here
 

@@ -8,9 +8,9 @@
 import Foundation
 import Commander
 
-internal struct Generator {
+public struct Generator {
   
-  func generate(template: String,
+  public static func generate(template: String,
                 xcodeVersion: String,
                 application: String,
                 config: String) {
@@ -20,11 +20,11 @@ internal struct Generator {
                           application: application,
                           config: config)
     
-    guard let cli = commandLine else {
-      print("here print Xcone cli description")
-      exit(1)
-    }
-    if let cliError = cli.error {
+    // guard let cli = commandLine else {
+    //   print("here print Xcone cli description")
+    //   exit(1)
+    // }
+    if let cliError = commandLine.error {
       cliError.printError()
       exit(1)
     } else {
