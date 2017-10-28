@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Commander
 
 public struct Generator {
   
