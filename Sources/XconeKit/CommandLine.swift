@@ -24,8 +24,8 @@ public struct CommandLine {
   }
   
   public func parse(completion: (_ result: CommandLineResult) -> Void) {
-    if self.application == nil || self.template == nil || self.xcodeVersion == nil || self.config == nil {
-      
+    if self.application == nil && self.template == nil && self.xcodeVersion == nil && self.config == nil {
+      completion(.failure(error: .noParams))
     } else if self.application == nil && self.config == nil {
       completion(.failure(error: .missingApplication))
     } else if self.config != nil && (self.template != nil || self.application != nil || self.xcodeVersion != nil) {
