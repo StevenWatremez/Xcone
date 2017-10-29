@@ -41,13 +41,13 @@ public struct CommandLine {
 
 extension CommandLine: CustomStringConvertible {
   public var description: String {
-    var rDescription: String = ""
-    let separator: String = ", "
-    rDescription += "|| CommandLine || "
-    rDescription += self.template != nil ? "template: \(self.template ?? "")" : ""
-    rDescription += self.xcodeVersion != nil ? separator + "xcode-version: \(self.xcodeVersion ?? "")" : ""
-    rDescription += self.application != nil ? separator + "application: \(self.application ?? "")" : ""
-    rDescription += self.config != nil ? separator + "config: \(self.config ?? "")" : ""
+    var rDescription: String = "-------------------------------------------"
+    rDescription += "\n:: CommandLine ::"
+    rDescription += self.template != nil ? "\ntemplate = \(self.template ?? "")" : ""
+    rDescription += self.xcodeVersion != nil ? "\nxcode-version = \(self.xcodeVersion ?? "")" : ""
+    rDescription += self.application != nil ? "\napplication = \(self.application ?? "")" : ""
+    rDescription += self.config != nil ? "\nconfig = \(self.config ?? "")" : ""
+    rDescription += "\n-------------------------------------------"
     return rDescription
   }
 }

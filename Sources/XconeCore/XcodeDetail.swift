@@ -13,3 +13,9 @@ struct XcodeDetail {
   let version: String
   let iconName: String
 }
+
+extension XcodeDetail: CustomStringConvertible {
+  var description: String {
+    return "XcodeDetail :: path = '\(self.path)', version = '\(self.version)', iconName = '\(self.iconName)'"
+  }
+}

@@ -47,7 +47,6 @@ public struct Generator {
   }
   
   private func successCLIResult(type: CommandLineType) {
-    print("everyThing is fine")
     switch type {
     case .cli(let params): self.fetchXcodeData(params: params)
     case .yaml: break
@@ -59,9 +58,11 @@ public struct Generator {
   }
   
   private func fetchXcodeData(params: Params) {
-    let applicationParam = XcodeApplication(application: params.application)
+    let serialization = SerializationService()
+    let applicationParam = XcodeApplication(application: params.application, xcodeVersion: params.xcodeVersion, serialization: serialization)
     if let detail = applicationParam.detail {
       // TODO : here manage the following generation with xcode detail
+      print(detail.description)
     } else {
       print("failed to find Xcode application !")
     }
