@@ -9,26 +9,35 @@ import Foundation
 
 public struct Generator {
   
-  public static func generate(template: String,
-                xcodeVersion: String,
-                application: String,
-                config: String) {
+  public init() {}
+  
+  public func generate(template: String,
+                       xcodeVersion: String,
+                       application: String,
+                       config: String) {
     
     let commandLine = CommandLine(template: template,
-                          xcodeVersion: xcodeVersion,
-                          application: application,
-                          config: config)
+                                  xcodeVersion: xcodeVersion,
+                                  application: application,
+                                  config: config)
     
-    guard let cli = commandLine else {
-      print("here print Xcone cli description")
-      exit(1)
+    commandLine.parse() { (result: CommandLineResult) in
+      switch result {
+      case .success(let type): self.successCLIResult(type: type)
+      case .failure(let error): self.errorHandle(error: error)
+      }
     }
-    if let cliError = cli.error {
-      cliError.printError()
-      exit(1)
-    } else {
-      print("everyThing is fine")
-    }
+    
+    //    guard let cli = commandLine else {
+    //      print("here print Xcone cli description")
+    //      exit(1)
+    //    }
+    //    if let cliError = cli.error {
+    //      cliError.printError()
+    //      exit(1)
+    //    } else {
+    //      print("everyThing is fine")
+    //    }
     
     // TODO : check template :
     // - if it's just name, search inside resources to find this template
@@ -45,5 +54,13 @@ public struct Generator {
     // - Find an Xcode in Application folder
     // - Find it's version number info.plist :: CFBundleShortVersionString
     // - Find it's icon name inside info.plist :: CFBundleIconFile
+  }
+  
+  private func successCLIResult(type: CommandLineType) {
+    print("everyThing is fine")
+  }
+  
+  private func errorHandle(error: CommandLineError) {
+    error.printError()
   }
 }

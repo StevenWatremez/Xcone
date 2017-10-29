@@ -8,6 +8,8 @@
 import Commander
 import XconeKit
 
+private let generator = Generator()
+
 private let main = command(
   // auto-all : is used to automate Xcode 
   // --template : is used to specified which icon template you want to create xcode icon
@@ -18,7 +20,7 @@ private let main = command(
   Option<String>("application", default: "", flag: "a", description: "Xcode target application"),
   // --config or -c : is used to specified which Xcode you want to change icon of it
   Option<String>("config", default: "", flag: "c", description: "special yaml config to target specific or multiple Xcode"),
-  Generator.generate)
+  generator.generate)
 
 main.run() // your application start from here
 
