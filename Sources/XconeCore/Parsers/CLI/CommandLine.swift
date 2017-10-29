@@ -30,10 +30,24 @@ public struct CommandLine {
       completion(.failure(error: .missingApplication))
     } else if self.config != nil && (self.template != nil || self.application != nil || self.xcodeVersion != nil) {
       completion(.failure(error: .soMuchParams))
-    } else if self.application != nil {
-      completion(.success(type: .cli))
+    } else if let application = self.application {
+      let params = Params(template: self.template, xcodeVersion: self.xcodeVersion, application: application)
+      completion(.success(type: .cli(params: params)))
     } else if self.config != nil {
-      completion(.success(type: .configurationFile))
+      completion(.success(type: .yaml))
     }
+  }
+}
+
+extension CommandLine: CustomStringConvertible {
+  public var description: String {
+    var rDescription: String = ""
+    let separator: String = ", "
+    rDescription += "|| CommandLine || "
+    rDescription += self.template != nil ? "template: \(self.template ?? "")" : ""
+    rDescription += self.xcodeVersion != nil ? separator + "xcode-version: \(self.xcodeVersion ?? "")" : ""
+    rDescription += self.application != nil ? separator + "application: \(self.application ?? "")" : ""
+    rDescription += self.config != nil ? separator + "config: \(self.config ?? "")" : ""
+    return rDescription
   }
 }

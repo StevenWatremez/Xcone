@@ -21,23 +21,13 @@ public struct Generator {
                                   application: application,
                                   config: config)
     
+    print(commandLine.description)
     commandLine.parse() { (result: CommandLineResult) in
       switch result {
       case .success(let type): self.successCLIResult(type: type)
       case .failure(let error): self.errorHandle(error: error)
       }
     }
-    
-    //    guard let cli = commandLine else {
-    //      print("here print Xcone cli description")
-    //      exit(1)
-    //    }
-    //    if let cliError = cli.error {
-    //      cliError.printError()
-    //      exit(1)
-    //    } else {
-    //      print("everyThing is fine")
-    //    }
     
     // TODO : check template :
     // - if it's just name, search inside resources to find this template
@@ -52,15 +42,28 @@ public struct Generator {
     
     // TODO : if auto-all is called :
     // - Find an Xcode in Application folder
-    // - Find it's version number info.plist :: CFBundleShortVersionString
+    // - Find it's version number version.plist :: CFBundleShortVersionString
     // - Find it's icon name inside info.plist :: CFBundleIconFile
   }
   
   private func successCLIResult(type: CommandLineType) {
     print("everyThing is fine")
+    switch type {
+    case .cli(let params): self.fetchXcodeData(params: params)
+    case .yaml: break
+    }
   }
   
   private func errorHandle(error: CommandLineError) {
     error.printError()
+  }
+  
+  private func fetchXcodeData(params: Params) {
+    let applicationParam = XcodeApplication(application: params.application)
+    if let detail = applicationParam.detail {
+      // TODO : here manage the following generation with xcode detail
+    } else {
+      print("failed to find Xcode application !")
+    }
   }
 }

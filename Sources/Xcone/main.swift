@@ -6,7 +6,7 @@
 //
 
 import Commander
-import XconeKit
+import XconeCore
 
 private let generator = Generator()
 

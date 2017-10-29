@@ -9,10 +9,10 @@ import Foundation
 
 public struct ParserManager {
   
-  private let commandLine: CommandLine
+  private let result: CommandLineResult
   
-  public init(commandLine: CommandLine) {
-    self.commandLine = commandLine
+  public init(result: CommandLineResult) {
+    self.result = result
   }
   
   public func parse() {

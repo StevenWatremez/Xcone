@@ -6,12 +6,12 @@
 //
 
 import XCTest
-@testable import XconeKit
+@testable import XconeCore
 
 class XconeCLITests: XCTestCase {
   
   func testNoParameter() {
-    
+
   }
 
   func testMissingApplicationParameter() {
