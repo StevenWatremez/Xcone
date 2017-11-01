@@ -15,11 +15,13 @@ public struct XcodeApplication {
   private let application: String
   private let xcodeVersion: String?
   private let serialization: SerializationService
+  private let fileSystem: FileSystem
   
-  init(application: String, xcodeVersion: String? = nil, serialization: SerializationService) {
+  init(application: String, xcodeVersion: String? = nil, serialization: SerializationService, fileSystem: FileSystem) {
     self.application = application
     self.serialization = serialization
     self.xcodeVersion = xcodeVersion
+    self.fileSystem = fileSystem
   }
   
   /// Detail object to manipulate xcode datas
@@ -37,9 +39,9 @@ public struct XcodeApplication {
   private var path: Path? {
     var rPath: Path?
     if self.application.isPath() {
-      rPath = self.findByPath(path: self.application)
+      rPath = self.fileSystem.findApplication(byPath: self.application)
     } else {
-      rPath = self.findByName(name: self.application)
+      rPath = self.fileSystem.findApplication(byName: self.application)
     }
     return rPath
   }
@@ -60,31 +62,5 @@ public struct XcodeApplication {
   /// - Returns: boolean if path to Xcode application exists
   private func exists(path: Path) -> Bool {
     return true
-  }
-}
-
-extension XcodeApplication {
-  private func findByPath(path: String) -> Path? {
-    // search Xcode application with path
-    var usablePath = path.contains(".app") ? path : path + ".app"
-    usablePath += "/Contents"
-    let versionFileName = "version.plist"
-    let infoFileName = "info.plist"
-    guard let contentsFolder = try? Folder(path: usablePath),
-      contentsFolder.containsFile(named: versionFileName),
-      contentsFolder.containsFile(named: infoFileName) else {
-        return nil
-    }
-    return usablePath
-  }
-  
-  private func findByName(name: String) -> Path? {
-    // search Xcode application with name inside applications folder
-    let usableName = name.contains(".app") ? name : name + ".app"
-    let applicationFolderName = "/Applications"
-    let applicationFolder = try? Folder(path: applicationFolderName)
-    let hasXcode = applicationFolder?.containsSubfolder(named: usableName) ?? false
-    let rPath: Path = applicationFolderName + "/" + usableName + "/Contents"
-    return hasXcode ? rPath : nil
   }
 }
