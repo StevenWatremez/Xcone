@@ -9,20 +9,7 @@ import Foundation
 
 internal struct MagickWandService {
   private enum Wand {
-    /// convert -resize 16x16 ../Xcode-icon.png icon_16x16.png
-    /// convert -resize 32x32 ../Xcode-icon.png icon_16x16@2x.png
-    /// convert -resize 32x32 ../Xcode-icon.png icon_32x32.png
-    /// convert -resize 64x64 ../Xcode-icon.png icon_32x32@2x.png
-    /// convert -resize 128x128 ../Xcode-icon.png icon_128x128.png
-    /// convert -resize 256x256 ../Xcode-icon.png icon_128x128@2x.png
-    /// convert -resize 256x256 ../Xcode-icon.png icon_256x256.png
-    /// convert -resize 512x512 ../Xcode-icon.png icon_256x256@2x.png
-    /// convert -resize 512x512 ../Xcode-icon.png icon_512x512.png
     /// convert -resize 1024x1024 ../Xcode-icon.png icon_512x512@2x.png
-    
-    /// convert -resize 128x128 ../Xcode-banner.png icon_512x512@2x.png
-    /// convert -pointsize 270 -fill white -draw 'text 500,500 "9.0" ' Xcode-banner-test.png Xcode-banner-test-text.png
-    /// convert icon.png -size 1024x1024 -pointsize 270 -gravity Center -fill white -draw "rotate -20 text 0,0 '9.0'" icon-generate.png
     static let convert = "convert"
   }
   
@@ -41,7 +28,6 @@ internal struct MagickWandService {
     static let gravity = "-gravity"
   }
   
-  /////////////
   private let type: WandType
   
   init(type: WandType) {
@@ -61,43 +47,43 @@ internal struct MagickWandService {
   private func generateResizeArguments(with wand: WandResize) -> [String] {
     var rArguments: [String] = []
     // -resize
-    rArguments.append(shellElement: Arguments.resize)
+    rArguments.append(Arguments.resize)
     let convertOption = String(format: "%dx%d", wand.width, wand.height)
-    rArguments.append(shellElement: convertOption)
+    rArguments.append(convertOption)
     // input
-    rArguments.append(shellElement: wand.input)
+    rArguments.append(wand.input)
     // output
-    rArguments.append(shellElement: wand.output)
+    rArguments.append(wand.output)
     return rArguments
   }
   
-  /// convert icon.png -size 1024x1024 -pointsize 270 -gravity Center -fill white -draw "rotate -20 text 0,0 '9.0'" icon-generate.png
+  /// convert icon.png -size 1024x1024 -pointsize 270 -gravity Center \
+  ///         -fill white -annotate -9x-9+35+0 9.0 icon-generate.png
   private func generateTextArguments(with wand: WandText) -> [String] {
     var rArguments: [String] = []
     // -size
-    rArguments.append(shellElement: Arguments.size)
+    rArguments.append(Arguments.size)
     let convertOption = String(format: "%dx%d", wand.width, wand.height)
-    rArguments.append(shellElement: convertOption)
+    rArguments.append(convertOption)
     // -pointSize
-    rArguments.append(shellElement: Arguments.pointSize)
+    rArguments.append(Arguments.pointSize)
     let pointSizeOption = String(format: "%d", wand.pointSize)
-    rArguments.append(shellElement: pointSizeOption)
+    rArguments.append(pointSizeOption)
     // -gravity
-    rArguments.append(shellElement: Arguments.gravity)
+    rArguments.append(Arguments.gravity)
     let gravityOption = String(format: "%@", wand.gravity.rawValue)
-    rArguments.append(shellElement: gravityOption)
+    rArguments.append(gravityOption)
     // -fill
-    rArguments.append(shellElement: Arguments.fill)
+    rArguments.append(Arguments.fill)
     let fillOption = String(format: "%@", wand.fill.rawValue)
-    rArguments.append(shellElement: fillOption)
+    rArguments.append(fillOption)
     // -annotate
-    rArguments.append(shellElement: Arguments.annotate)
+    rArguments.append(Arguments.annotate)
     rArguments.append(contentsOf: wand.draw.arguments)
     // input
-    rArguments.append(shellElement: wand.input)
+    rArguments.append(wand.input)
     // output
-    rArguments.append(shellElement: wand.output)
-    
+    rArguments.append(wand.output)
     return rArguments
   }
 }

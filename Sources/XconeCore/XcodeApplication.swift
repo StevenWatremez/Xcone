@@ -35,7 +35,11 @@ public struct XcodeApplication {
         return nil
     }
     let resourcesPath = contentsPath + "/Resources"
-    let xcodeDetail = XcodeDetail(rootPath: path, contentsPath: contentsPath, resourcesPath: resourcesPath, version: version, iconName: iconName)
+    let xcodeDetail = XcodeDetail(rootPath: path,
+                                  contentsPath: contentsPath,
+                                  resourcesPath: resourcesPath,
+                                  version: version,
+                                  iconName: iconName)
     return xcodeDetail
   }
   

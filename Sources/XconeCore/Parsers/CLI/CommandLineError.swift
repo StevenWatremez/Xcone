@@ -16,7 +16,11 @@ public enum CommandLineError: Error {
     let printErrorDescription: String
     switch self {
     case .missingApplication: printErrorDescription = "--application parameter is missing"
-    case .soMuchParams: printErrorDescription = "You can't use --application, --template or --xcode-version parameters in the same time with --config"
+    case .soMuchParams: printErrorDescription = """
+      You can't use
+      --application, --template or --xcode-version parameters
+      in the same time with --config
+      """
     case .noParams: printErrorDescription = "!!!!!! print cli description !!!!!!"
     }
     print(printErrorDescription)
