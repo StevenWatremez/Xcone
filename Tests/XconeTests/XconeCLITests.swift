@@ -9,7 +9,6 @@ import XCTest
 @testable import XconeCore
 
 class XconeCLITests: XCTestCase {
-  
   func testNoParameter() {
 
   }
@@ -28,7 +27,7 @@ class XconeCLITests: XCTestCase {
 }
 
 extension XconeCLITests {
-  static var allTests : [(String, (XconeCLITests) -> () throws -> Void)] {
+  static var allTests: [(String, (XconeCLITests) -> () throws -> Void)] {
     return [
       ("testNoParameter", testNoParameter),
       ("testMissingApplicationParameter", testMissingApplicationParameter),

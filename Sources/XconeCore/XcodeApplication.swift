@@ -26,12 +26,16 @@ public struct XcodeApplication {
   
   /// Detail object to manipulate xcode datas
   var detail: XcodeDetail? {
-    guard let path = self.path,
-      let version: String = (self.xcodeVersion != nil) ? self.xcodeVersion : self.version(path: path),
-      let iconName = self.iconName(path: path) else {
+    guard let path = self.path else {
+      return nil
+    }
+    let contentsPath = path + "/Contents"
+    guard let version: String = (self.xcodeVersion != nil) ? self.xcodeVersion : self.version(path: contentsPath),
+      let iconName = self.iconName(path: contentsPath) else {
         return nil
     }
-    let xcodeDetail = XcodeDetail(path: path, version: version, iconName: iconName)
+    let resourcesPath = contentsPath + "/Resources"
+    let xcodeDetail = XcodeDetail(rootPath: path, contentsPath: contentsPath, resourcesPath: resourcesPath, version: version, iconName: iconName)
     return xcodeDetail
   }
   

@@ -1,0 +1,34 @@
+# rule identifiers to exclude from running
+disabled_rules:
+  - trailing_whitespace
+
+# some rules are only opt-in
+opt_in_rules:
+  - empty_count
+  - force_unwrapping
+
+# paths to include during linting. `--path` is ignored if present.
+included:
+  - Sources
+  - Tests
+
+# paths to ignore during linting. Takes precedence over `included`.
+#excluded:
+#  - Carthage
+#  - Pods
+
+# line_length:
+#   warning: 200
+#   error: 300
+
+# function_body_length: 80
+# type_body_length: 300
+# file_length: 600
+
+# identifier_name:
+#   min_length: 1
+#   max_length: 70
+
+# type_name:
+#   min_length: 1
+#   max_length: 70

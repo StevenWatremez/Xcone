@@ -8,6 +8,19 @@
 import Foundation
 import Files
 
+// TODO : FileSystem template folder
+//
+// templates
+// └── banner
+//     └── Xcode-template.png
+
+// TODO : FileSystem template folder in temporary
+//
+// templates
+// └── banner
+//     ├── Xcode-template.png
+//     └── {{iconName}}.inconset
+
 internal struct FileSystem {
   
  func findApplication(byPath path: String) -> Path? {
@@ -21,7 +34,7 @@ internal struct FileSystem {
       contentsFolder.containsFile(named: infoFileName) else {
         return nil
     }
-    return usablePath
+    return path
   }
   
   func findApplication(byName name: String) -> Path? {
@@ -30,7 +43,7 @@ internal struct FileSystem {
     let applicationFolderName = "/Applications"
     let applicationFolder = try? Folder(path: applicationFolderName)
     let hasXcode = applicationFolder?.containsSubfolder(named: usableName) ?? false
-    let rPath: Path = applicationFolderName + "/" + usableName + "/Contents"
+    let rPath: Path = applicationFolderName + "/" + usableName
     return hasXcode ? rPath : nil
   }
 }

@@ -9,7 +9,6 @@ import Foundation
 
 internal struct XcodeInfoPlist: Codable {
   var iconName: String
-  
   private enum CodingKeys: String, CodingKey {
     case iconName = "CFBundleIconFile"
   }

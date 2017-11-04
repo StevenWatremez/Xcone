@@ -8,12 +8,6 @@
 import Foundation
 
 internal struct WandDraw {
-  let text: String
-  let rotation: Int8
-  let translation: (x: Int8, y: Int8)
-}
-
-internal struct Draw {
   private enum DrawArguments {
     /// rotate -20
     static let rotate = "rotate"
@@ -23,29 +17,22 @@ internal struct Draw {
     static let translation = "translation"
   }
   
-  private let wand: WandDraw
+  let text: String
+  let rotation: Int8
+  let translation: (x: Int8, y: Int8)
   
-  init(wand: WandDraw) {
-    self.wand = wand
+  init(text: String, rotation: Int8, translation: (x: Int8, y: Int8)) {
+    self.text = text
+    self.rotation = rotation
+    self.translation = translation
   }
   
-  var argument: String {
-    var rArgument: String = ""
-    // translate
-    rArgument += DrawArguments.translation
-    rArgument += " "
-    rArgument += String(format: "%d,%d", self.wand.translation.x, self.wand.translation.y)
-    
+  var arguments: [String] {
+    var rArguments: [String] = []
     // rotate
-    rArgument += DrawArguments.rotate
-    rArgument += " "
-    rArgument += String(format: "%d", self.wand.rotation)
-    
-    rArgument += DrawArguments.text
-    rArgument += " 0,0" // TODO : check if this value is necessary
-    rArgument += " "
-    rArgument += String(format: "\"%@\"", self.wand.text)
-    
-    return rArgument
+    let rotation = String(format: "%dx%d+%d+%d", self.rotation, self.rotation, self.translation.y, self.translation.x)
+    rArguments.append(rotation)
+    rArguments.append(String(format: "%@", self.text))
+    return rArguments
   }
 }

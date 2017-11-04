@@ -9,13 +9,15 @@ import Foundation
 
 struct XcodeDetail {
   //var name: String = ""
-  let path: String
+  let rootPath: String
+  let contentsPath: String
+  let resourcesPath: String
   let version: String
   let iconName: String
 }
 
 extension XcodeDetail: CustomStringConvertible {
   var description: String {
-    return "XcodeDetail :: path = '\(self.path)', version = '\(self.version)', iconName = '\(self.iconName)'"
+    return "XcodeDetail :: rootPath = '\(self.rootPath)', version = '\(self.version)', iconName = '\(self.iconName)'"
   }
 }

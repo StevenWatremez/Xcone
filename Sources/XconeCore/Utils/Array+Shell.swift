@@ -8,10 +8,6 @@
 import Foundation
 
 extension Array where Element == String {
-  mutating func append(shellElement: String) {
-    append(" " + shellElement)
-  }
-  
   /// Use shell to exec command line. Usage :
   ///
   /// * shell("ls")
@@ -20,9 +16,9 @@ extension Array where Element == String {
   /// - Parameter args: all separate arguments to exec command line
   /// - Returns: termination status
   @discardableResult
-  func shellExec() -> Int32 {
+  func shellExec(_ launchPath: String) -> Int32 {
     let task = Process()
-    task.launchPath = "/usr/bin/env"
+    task.launchPath = launchPath
     task.arguments = self
     task.launch()
     task.waitUntilExit()

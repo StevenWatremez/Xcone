@@ -14,9 +14,9 @@ public struct CommandLine {
   let config: String?
   
   public init(template: String,
-       xcodeVersion: String,
-       application: String,
-       config: String) {
+              xcodeVersion: String,
+              application: String,
+              config: String) {
     self.template = !template.isEmpty ? template : nil
     self.xcodeVersion = !xcodeVersion.isEmpty ? xcodeVersion : nil
     self.application = !application.isEmpty ? application : nil
