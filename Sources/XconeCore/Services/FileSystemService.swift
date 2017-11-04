@@ -8,13 +8,11 @@
 import Foundation
 import Files
 
-// TODO : FileSystem template folder
 //
 // templates
 // └── banner
 //     └── Xcode-template.png
 
-// TODO : FileSystem template folder in temporary
 //
 // templates
 // └── banner

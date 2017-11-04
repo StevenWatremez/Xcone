@@ -44,13 +44,6 @@ public struct Generator {
     error.printError()
   }
   
-  fileprivate func createIcns(_ templateFolder: Folder?, _ detail: XcodeDetail) {
-    // iconutil -c icns myimage.iconset
-    let iconutilArguments: [String] = ["-c", "icns", "\((templateFolder?.path ?? "") + detail.iconName).iconset"]
-    let createIcns = iconutilArguments.shellExec("/usr/bin/iconutil")
-    print(createIcns)
-  }
-  
   private func fetchXcodeData(params: Params) {
     let serialization = SerializationService()
     let fileSystem = FileSystem()
@@ -72,29 +65,29 @@ public struct Generator {
       let folder = Folder.temporary
       try? folder.subfolder(named: "xcone-template").delete()
       let templateFolderCopy = try folder.createSubfolder(named: "xcone-template")
-      let templateFolder = try? xconeTemplateFolder.copy(to: templateFolderCopy)
+      let templateFolder = try xconeTemplateFolder.copy(to: templateFolderCopy)
       //    - Add a folder inside it: {{ iconName }}.iconset
-      try? templateFolder?.subfolder(named: "\(xcode.iconName).iconset").delete()
-      let iconsetFolder = try templateFolder?.createSubfolder(named: "\(xcode.iconName).iconset")
-      print("template folder : '\(String(describing: templateFolder?.path))'")
+      try? templateFolder.subfolder(named: "\(xcode.iconName).iconset").delete()
+      let iconsetFolder = try templateFolder.createSubfolder(named: "\(xcode.iconName).iconset")
+      print("template folder : '\(templateFolder.path)'")
       // 2 - add xcode version on xcode template Xcode-template.png and generate an image Xcode-icon.png
       self.convert(xcode: xcode, templateFolder: templateFolder)
       // 3 - resize xcode icon inside {{ iconName }}.iconset in : 16x16, 16x16@2x, 32x32, 32x32@2x, 64x64, 64x64@2x,
       // 128x128, 128x128@2x, 256x256, 256x256@2x, 512x512, 512x512@2x
-      self.resizeAll(xcode: xcode, templateFolder: templateFolder, iconsetFolder: iconsetFolder)
+      WandResizeManager().resizeAll(xcode: xcode, templateFolder: templateFolder, iconsetFolder: iconsetFolder)
       // 4 - create icns with {{ iconName }}.iconset to {{ iconName }}.icns
-      self.createIcns(templateFolder, xcode)
+      self.createIcns(templateFolder: templateFolder, detail: xcode)
       // 5 - copy and paste icns file into Xcode application
       self.copyIcns(xcode: xcode, templateFolder: templateFolder)
       // 6 - clean temp template directory after finishing.
       // TODO : when error occured, this directory need to be clear too.
-      try? templateFolder?.delete()
+      try? templateFolder.delete()
     } catch {
       print("failed to manage files and folders !")
     }
   }
   
-  private func convert(xcode: XcodeDetail, templateFolder: Folder?) {
+  private func convert(xcode: XcodeDetail, templateFolder: Folder) {
     let wandDraw = WandDraw(text: xcode.version, rotation: -9, translation: (x: 0, y: 35))
     let wandText = WandText(width: 1024,
                             height: 1024,
@@ -102,69 +95,27 @@ public struct Generator {
                             fill: .white,
                             gravity: .center,
                             draw: wandDraw,
-                            input: ((templateFolder?.path ?? "") + "Xcode-template.png"),
-                            output: ((templateFolder?.path ?? "") + "\(xcode.iconName).png"))
+                            input: templateFolder.path + "Xcode-template.png",
+                            output: templateFolder.path + "\(xcode.iconName).png")
     let textMagickWand = MagickWandService(type: .text(wand: wandText))
     let convert = textMagickWand.arguments.shellExec("/usr/local/opt/imagemagick/bin/convert")
     print(textMagickWand.arguments.description)
     print(convert)
   }
   
-  private func resizeAll(xcode: XcodeDetail, templateFolder: Folder?, iconsetFolder: Folder?) {
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 16, outputName: "icon_16x16.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 32, outputName: "icon_16x16@2x.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 32, outputName: "icon_32x32.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 64, outputName: "icon_32x32@2x.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 64, outputName: "icon_64x64.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 128, outputName: "icon_64x64@2x.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 128, outputName: "icon_128x128.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 256, outputName: "icon_128x128@2x.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 256, outputName: "icon_256x256.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 512, outputName: "icon_256x256@2x.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 512, outputName: "icon_512x512.png")
-    self.resize(xcode: xcode, templateFolder: templateFolder,
-                iconsetFolder: iconsetFolder, size: 1024, outputName: "icon_512x512@2x.png")
-  }
-  
-  private func resize(xcode: XcodeDetail,
-                      templateFolder: Folder?,
-                      iconsetFolder: Folder?,
-                      size: Int16,
-                      outputName: String) {
-    let wandresize = WandResize(width: size,
-                                height: size,
-                                input: ((templateFolder?.path ?? "") + "\(xcode.iconName).png"),
-                                output: ((iconsetFolder?.path ?? "") + outputName))
-    let resizeMagickWand = MagickWandService(type: .resize(wand: wandresize))
-    let resize = resizeMagickWand.arguments.shellExec("/usr/local/opt/imagemagick/bin/convert")
-    print(resizeMagickWand.arguments.description)
-    print(resize)
-  }
-  
-  private func copyIcns(xcode: XcodeDetail, templateFolder: Folder?) {
+  private func copyIcns(xcode: XcodeDetail, templateFolder: Folder) {
     do {
       let xcodeApplicationResourcesFolder = try Folder(path: xcode.resourcesPath)
       let xcodeApplicationRootFolder = try Folder(path: xcode.rootPath)
       
       //try FileManager().removeItem(atPath: xcodeApplicationFolder.path)
-      let resourcesIcns = try templateFolder?.file(named: "\(xcode.iconName).icns")
+      let resourcesIcns = try templateFolder.file(named: "\(xcode.iconName).icns")
       try? xcodeApplicationResourcesFolder.file(named: "\(xcode.iconName).icns").delete()
-      try resourcesIcns?.copy(to: xcodeApplicationResourcesFolder)
+      try resourcesIcns.copy(to: xcodeApplicationResourcesFolder)
       
-      let rootIcns = try templateFolder?.file(named: "\(xcode.iconName).icns")
+      let rootIcns = try templateFolder.file(named: "\(xcode.iconName).icns")
       try? xcodeApplicationRootFolder.file(named: "\(xcode.iconName).icns").delete()
-      try rootIcns?.copy(to: xcodeApplicationRootFolder)
+      try rootIcns.copy(to: xcodeApplicationRootFolder)
       print("icon is copied ! You can now restart Xcode to show your new icon and enjoy !")
     } catch {
       if let filesError = error as? Files.FileSystem.Item.OperationError {
@@ -174,5 +125,12 @@ public struct Generator {
       }
       print("failed to copy icns inside '\(xcode.resourcesPath)' or '\(xcode.rootPath)' xcode folder !")
     }
+  }
+  
+  private func createIcns(templateFolder: Folder, detail: XcodeDetail) {
+    // iconutil -c icns myimage.iconset
+    let iconutilArguments: [String] = ["-c", "icns", "\(templateFolder.path + detail.iconName).iconset"]
+    let createIcns = iconutilArguments.shellExec("/usr/bin/iconutil")
+    print(createIcns)
   }
 }

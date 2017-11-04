@@ -30,7 +30,8 @@ import XconeCore
 // to define properties about which Xcode, template and version you want to manipulate
 // Instead of adding additional cli like following :
 // Xcone auto --aplications [Xcode_9.0, Xcode_9.1]
-// Xcone --templates [banner, banner, bubble] --xcode-versions [9.0b3, 9.0, 8.3.3] --applications [Xcode_9.0, Xcode, Xcode_8.3.3]
+// Xcone --templates [banner, banner, bubble] --xcode-versions [9.0b3, 9.0, 8.3.3] \
+//       --applications [Xcode_9.0, Xcode, Xcode_8.3.3]
 
 private let generator = Generator()
 
