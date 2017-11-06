@@ -59,7 +59,8 @@ public struct Generator {
     print(xcode.description)
     
     do {
-      let xconeTemplate = "~/Pictures/Xcone/templates/banner"
+      //let xconeTemplate = "~/Pictures/Xcone/templates/banner"
+      let xconeTemplate = "/usr/local/bin/Xcone/Resources/templates/banner"
       let xconeTemplateFolder = try Folder(path: xconeTemplate)
       // 1 - prepare temp folder with Resources/templates/banner/
       let folder = Folder.temporary
